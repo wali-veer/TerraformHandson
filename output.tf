@@ -1,4 +1,4 @@
-output "instance_ami" {
+output "instance_ami {
   value = aws_instance.web.ami
 }
 
