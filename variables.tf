@@ -1,4 +1,4 @@
 variable "instance_type" {
-  description = "EC2 instance type to be provisioned"
-  default = "t3.nano"
+  description = "Type of the EC2 instance to be provisioned"
+  default     = "t3.nano"
 }
