@@ -1,4 +1,5 @@
 data "aws_ami" "app_ami" {
+  
   most_recent = true
 
   filter {
@@ -11,14 +12,55 @@ data "aws_ami" "app_ami" {
     values = ["hvm"]
   }
 
-  owners = ["333322221111"] 
+  owners = ["123456789012]
+
+}
+
+data "aws_vpc" "default" {
+  default = true
 }
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.app_ami.id
+  ami = data.aws_ami.app_ami.id
   instance_type = var.instance_type
+  vpc_security_group_ids = [aws_security_group.web.id]
 
   tags = {
-    Name = "My EC2 instance"
+    Name = "terraform provisioned instance"
   }
+}
+
+resource "aws_security_group "web" {
+  name = "web"
+  tags = {
+    Terraform = "true"
+  }
+  vpc_id = data.aws_vpc.default.id
+}
+
+resource "aws_security_group_rule" "web_http_in" {
+  type = "ingress"
+  from_port = 80
+  to_port = 80
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  vpc_security_group_id = aws_security_group.web.id
+}
+
+resource "aws_security_group_rule" "web_http_in" {
+  type = "ingress"
+  from_port = 443
+  to_port = 443
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  vpc_security_group_id = aws_security_group.web.id
+}
+
+resource "aws_security_group_rule" "web.all_out" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+  vpc_security_group_id = aws_security_group.web.id
 }
