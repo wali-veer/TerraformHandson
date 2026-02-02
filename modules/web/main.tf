@@ -33,7 +33,7 @@ module "web_autoscaling" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "6.5.2"
 
-  name = "web"
+  name = "${var.environment.name}-web" 
 
   min_size            = var.asg_min
   max_size            = var.asg_max
@@ -48,7 +48,7 @@ module "web_alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 6.0"
 
-  name = "web-alb"
+  name = "${var.environment.name}-web-alb"
 
   load_balancer_type = "application"
 
@@ -83,7 +83,7 @@ module "web_sg" {
   version = "4.13.0"
 
   vpc_id  = module.web_vpc.vpc_id
-  name    = "web"
+  name    = "${var.environment.name}-web"
   ingress_rules = ["https-443-tcp","http-80-tcp"]
   ingress_cidr_blocks = ["0.0.0.0/0"]
   egress_rules = ["all-all"]
