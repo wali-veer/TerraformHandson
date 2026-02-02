@@ -74,7 +74,7 @@ module "web_alb" {
   ]
 
   tags = {
-    Environment = "dev"
+    Environment = var.environment.name
   }
 }
 
