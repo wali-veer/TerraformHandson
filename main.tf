@@ -11,7 +11,7 @@ data "aws_ami" "app_ami" {
     values = ["hvm"]  
   }
 
-  owners = ["123456781234]
+  owners = ["123456781234"]
 }
 
 module "web_vpc" {
